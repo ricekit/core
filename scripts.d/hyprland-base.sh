@@ -60,4 +60,3 @@ remove_permissions() {
 export HYPRCONFIG_DIR=${HOME}/.config/hypr/
 # Replaces hardcoded paths in configuration files with the ACTIVE_RICEKIT_PATH variable 
 find ${HOME} -type f -size -1M -exec sed -iE '/^~|^\/app\/rice-in/${ACTIVE_RICEKIT_PATH}/' {} \;
-

@@ -5,10 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'commands.sh'
+      - 'scripts.d/**'
   pull_request:
     paths:
-      - 'commands.sh'
+      - 'scripts.d/**'
   workflow_dispatch:
 
 permissions:
