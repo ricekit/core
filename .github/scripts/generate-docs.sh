@@ -24,7 +24,7 @@ echo "" >> "$OUTPUT_FILE"
 
 for INPUT_FILE in "$INPUT_DIR"/*.sh; do
     sed -n '/^#/{s/^# ?//;p;}' "$INPUT_FILE" | head -n 1 >> "$OUTPUT_FILE"
-    sed -n '/^##/{s/^## ?//;p;}' "$INPUT_FILE" >> "$OUTPUT_FILE"
+    sed -n '/^##/{s///;p;}' "$INPUT_FILE" >> "$OUTPUT_FILE"
     echo "" >> "$OUTPUT_FILE"
     echo "### Available functions" >> "$OUTPUT_FILE"
     # Extract functions and their comments
