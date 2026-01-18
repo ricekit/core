@@ -1,2 +1,0 @@
-echo "source=hyprrice/variables.conf" >> rice/hypr/hyprland.conf
-echo "source=hyprrice/input.conf" >> rice/hypr/hyprland.conf

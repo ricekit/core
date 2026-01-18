@@ -1,0 +1,68 @@
+name: Auto-Document commands.sh
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'commands.sh'
+  pull_request:
+    paths:
+      - 'commands.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  document:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Generate documentation
+        id: generate_docs
+        run: |
+          chmod +x scripts/generate-docs.sh
+          ./scripts/generate-docs.sh commands.sh README.md
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet README.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes to documentation"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Documentation has been updated"
+          fi
+      
+      - name: Commit documentation
+        if: steps.check_changes.outputs.changed == 'true' && github.event_name == 'push'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "docs: auto-update commands.sh documentation [skip ci]"
+          git push
+      
+      - name: Comment on PR
+        if: steps.check_changes.outputs.changed == 'true' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const documentation = fs.readFileSync('README.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📝 Auto-Generated Documentation Updated\n\nThe \`commands.sh\` file has been modified. Here's the updated documentation:\n\n<details>\n<summary>View Documentation</summary>\n\n${documentation}\n\n</details>`
+            });

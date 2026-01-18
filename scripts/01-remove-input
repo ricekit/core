@@ -1,1 +1,0 @@
-sed -i '/^input {/,/^}/!d' rice/chhypr/hyprland.conf
