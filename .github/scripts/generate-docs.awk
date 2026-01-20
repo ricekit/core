@@ -17,12 +17,9 @@ BEGIN {
     func_name = $1
     sub(/\(\).*/, "", func_name)
     
-    # Print function header
-    print "### " func_name
-    print ""
-    
-    # Print comment if it exists
+    # Use function name as header print preceding comment block 
     if (comment_block != "") {
+        print "### " func_name
         print comment_block
         print ""
         comment_block = ""

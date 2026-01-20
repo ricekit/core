@@ -14,6 +14,15 @@
 # configuration that can be shared and version-controlled while preserving
 # user-specific customizations.
 
+
+remove_hyprlang_block(name) {
+    sed -Ei "/^${name}\s*\{/,/^\}/d" ${HYPRCONFIG_DIR}/hyprland.conf
+}
+
+remove_hyprlang_assign(name) {
+    sed -Ei "/^${name}\s*=/d" ${HYPRCONFIG_DIR}/hyprland.conf
+}
+
 # Appends user-specific configuration file sources to the main Hyprland config.
 # This enables users to maintain their own personalized settings that will be
 # loaded after the base configuration, allowing for customization without
@@ -29,7 +38,6 @@ add_user_config() {
     echo "source=hyprrice/variables.conf" >> ${HYPRCONFIG_DIR}/hyprland.conf
     echo "source=hyprrice/input.conf" >> ${HYPRCONFIG_DIR}/hyprland.conf
 }
-
 
 # Divides the monolithic Hyprland configuration file into separate, organized
 # module files for improved maintainability and clarity. This function extracts
@@ -97,7 +105,7 @@ modularise_config() {
 # the main configuration file, ensuring that each user or system can define
 # their own appropriate monitor settings without conflicts.
 remove_monitor() {
-    sed -i '/^monitor\s*=/d' ${HYPRCONFIG_DIR}/hyprland.conf
+    remove_hyprlang_block "monitor"
 }
 
 # Removes the main input configuration block from the Hyprland config file.
@@ -112,7 +120,7 @@ remove_monitor() {
 # Users can then define their own input preferences in a separate file or
 # through the user-specific configuration mechanism.
 remove_input() {
-    sed -i '/^input\s*\{/,/^\}/d' ${HYPRCONFIG_DIR}/hyprland.conf
+    remove_hyprlang_block "input"
 }
 
 # Removes all per-device input configuration blocks from the Hyprland config.
@@ -129,7 +137,7 @@ remove_input() {
 # Users should configure their specific devices locally rather than including
 # them in shared or version-controlled configurations.
 remove_device() {
-    sed -i '/^device\s*\{/,/^\}/d' ${HYPRCONFIG_DIR}/hyprland.conf
+    remove_hyprlang_block "device"
 }
 
 # Removes permission configuration directives from the Hyprland config file.
@@ -142,7 +150,7 @@ remove_device() {
 # allowing each system to define its own appropriate security policies without
 # inheriting potentially inappropriate or insecure settings from a shared config.
 remove_permissions() {
-    sed -i '/^permission\s*=/d' ${HYPRCONFIG_DIR}/hyprland.conf
+    sed -Ei '/^permission\s*=/d' ${HYPRCONFIG_DIR}/hyprland.conf
 }
 
 
