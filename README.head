@@ -1,2 +1,4 @@
 # Ricekit Hyprland base
-Provides base container for creating Hyprland ricings with [Ricehub](https://github.com/ricehub/ricehub).
+Provides base container for creating Hyprland ricings with [Ricekit](https://github.com/ricekit/ricekit).
+It contains various scripts that are used to manipulate existing Hyprland ricings so that they
+can be used with Ricekit.

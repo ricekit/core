@@ -14,14 +14,7 @@
 # configuration that can be shared and version-controlled while preserving
 # user-specific customizations.
 
-
-remove_hyprlang_block(name) {
-    sed -Ei "/^${name}\s*\{/,/^\}/d" ${HYPRCONFIG_DIR}/hyprland.conf
-}
-
-remove_hyprlang_assign(name) {
-    sed -Ei "/^${name}\s*=/d" ${HYPRCONFIG_DIR}/hyprland.conf
-}
+source hyprlang.sh
 
 # Appends user-specific configuration file sources to the main Hyprland config.
 # This enables users to maintain their own personalized settings that will be
@@ -67,7 +60,7 @@ add_user_config() {
 # This modular approach makes it easier to find, edit, and version control
 # specific aspects of the Hyprland configuration without navigating through
 # a large monolithic file.
-modularise_config() {
+hyprland_modularise_config() {
     module_tuples=(
         "autostart;^exec(-once)?\s*="           # Startup applications and autostart commands
         "environment;^env\s*="                   # Environment variable definitions
@@ -104,7 +97,7 @@ modularise_config() {
 # This function uses sed to delete all lines beginning with "monitor=" from
 # the main configuration file, ensuring that each user or system can define
 # their own appropriate monitor settings without conflicts.
-remove_monitor() {
+hyprland_remove_monitor() {
     remove_hyprlang_block "monitor"
 }
 
@@ -119,7 +112,7 @@ remove_monitor() {
 #
 # Users can then define their own input preferences in a separate file or
 # through the user-specific configuration mechanism.
-remove_input() {
+hyprland_remove_input() {
     remove_hyprlang_block "input"
 }
 
@@ -136,7 +129,7 @@ remove_input() {
 #
 # Users should configure their specific devices locally rather than including
 # them in shared or version-controlled configurations.
-remove_device() {
+hyprland_remove_device() {
     remove_hyprlang_block "device"
 }
 
@@ -149,7 +142,7 @@ remove_device() {
 # This function removes all lines containing "permission=" declarations,
 # allowing each system to define its own appropriate security policies without
 # inheriting potentially inappropriate or insecure settings from a shared config.
-remove_permissions() {
+hyprland_remove_permissions() {
     sed -Ei '/^permission\s*=/d' ${HYPRCONFIG_DIR}/hyprland.conf
 }
 
@@ -161,17 +154,3 @@ remove_permissions() {
 # configuration manipulation functions and make it easy to adapt to different
 # directory structures if needed.
 export HYPRCONFIG_DIR=${HOME}/.config/hypr/
-
-# Search through all small files (under 500k) in the user's home directory and
-# replace hardcoded absolute paths with the ACTIVE_RICEKIT_PATH variable.
-# This ensures that configuration files still point to their resources correctly
-# on the host system.
-#
-# The function targets paths that begin with:
-#   - "~" (tilde, representing home directory)
-#   - Hardcoded paths like "/home/user/Wallpapers"
-#
-# By replacing these with ${ACTIVE_RICEKIT_PATH}, configurations become
-# location-independent and will work correctly without ricekit having to
-# install them directly to the home directory of the host system.
-find ${HOME} -type f -size "-500k" -exec sed -iE '/^~|^\/app\/rice-in/${ACTIVE_RICEKIT_PATH}/' {} \;
