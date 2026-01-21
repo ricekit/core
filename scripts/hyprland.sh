@@ -153,4 +153,4 @@ hyprland_remove_permissions() {
 # By centralizing this path definition, we ensure consistency across all
 # configuration manipulation functions and make it easy to adapt to different
 # directory structures if needed.
-export HYPRCONFIG_DIR=${HOME}/.config/hypr/
+export HYPRCONFIG_DIR=${HOME}/.config/hypr
