@@ -7,9 +7,7 @@ LABEL org.opencontainers.image.author="Josh Andrews <coding@joshandrews.xyz>"
 
 RUN apk add --no-cache sed curl bash
 RUN mkdir -p /app/riceuser
-RUN adduser riceuser --shell /bin/bash --disabled-password --gecos "" --home /app/riceuser
+RUN adduser riceuser --disabled-password --gecos "" --home /app/riceuser
 WORKDIR /app
-COPY script.d /app/script.d
-COPY entrypoint.sh entrypoint.sh
-
-ENTRYPOINT [ "./entrypoint.sh" ]
+COPY script.d script.d
+COPY --chmod=700 copy-to-host.sh copy-to-host.sh
