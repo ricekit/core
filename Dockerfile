@@ -5,7 +5,8 @@ LABEL org.opencontainers.image.licenses="GPL-2.0-only"
 LABEL org.opencontainers.image.version="0.0.8"
 LABEL org.opencontainers.image.author="Josh Andrews <coding@joshandrews.xyz>"
 
-RUN apk add --no-cache sed curl bash
+RUN apk update && apk upgrade
+RUN apk add --no-cache sed curl bash yq
 RUN mkdir -p /app/riceuser
 RUN adduser riceuser --disabled-password --gecos "" --home /app/riceuser
 WORKDIR /app

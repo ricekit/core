@@ -1,4 +1,8 @@
-# Ricekit Hyprland base
-Provides base container for creating Hyprland ricings with [Ricekit](https://github.com/ricekit/ricekit).
-It contains various scripts that are used to manipulate existing Hyprland ricings so that they
-can be used with Ricekit.
+# Ricekit core
+Provides base container for creating ricings with [Ricekit](https://github.com/ricekit/ricekit).
+This container is not designed to be pulled directly but should be used as a base image
+for other containers that contain a `ricing.yaml` file to define the structure.
+
+It contains various scripts that are used to manipulate existing ricings so that they
+can be used with Ricekit. This allows the ricing creator to use any software necessary to customise
+the configuration files as needed without having it installed on the users host system.  
